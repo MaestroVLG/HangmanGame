@@ -1,28 +1,64 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class HangmanGame {
 
-    static String dictionary = "dictionary.txt";
-
-    static List<String> dictionarys = new ArrayList<>();
+//    static String dictionary = "dictionary.txt";
+//
+//    static List<String> dictionarys = new ArrayList<>();
 
 
     public static void main(String[] args) {
-        //todo запуск игры
-    }
 
-    private static void greetUser(){
-        System.out.println("Добро пожаловать в игру 'Виселица'! \n " +
-                "Правила игры простые, есть загаданное слово и возможность допустить не более 7 ошибок(один символ = один шаг \n " +
-                "Загаданное слово является существительным, нарицательным в именительном падеже \n" +
-                "на 4 ошибке выходит подсказка(одна буква имеющаяся в данном слове");
-        return gameMenu();
 
-    }
+        String test = "проверка";
 
-    private static void gameMenu(){
+        char[] maska = new char[test.length()];
+        for (int i = 0; i < maska.length; i++) {
+            maska[i] = '*';
+        }
 
+        int errorChar = 0;
+
+        Scanner scanner = new Scanner(System.in);
+
+        boolean gameStatus = false;
+        boolean stopGame = false;
+
+        while (!stopGame && !new String(maska).equals(test)) {
+            System.out.println("Введите букву: ");
+
+
+            String input = scanner.nextLine();
+            if (input.isEmpty()) continue; {
+
+                char symbols = Character.toLowerCase(input.charAt(0));
+
+
+                for (int i = 0; i < test.length(); i++) {
+                    if (Character.toLowerCase(test.charAt(i)) == symbols) {
+                        maska[i] = test.charAt(i);
+                        gameStatus = true;
+                    }
+
+                }
+
+                if (gameStatus) {
+                    System.out.println("Есть такая буква! Показываем! " + new String(maska));
+                }if(errorChar == 7){
+                    System.out.println("Иди повышай эрудицию, не угадал ты слово, а было оно: " + test);
+                    break; }
+                else {
+                    System.out.println("Не в этот раз, буква не найдена...");
+                    errorChar += 1;
+                    System.out.println("Колличество ошибок: " + errorChar);
+                }
+            }
+        } if (new String(maska).equals(test)){
+            System.out.println("И вы выйграли ААААААААААААААВТОМОБИЛЬ!!!" + test);
+        }
     }
 }
+
