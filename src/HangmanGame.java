@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-
 public class HangmanGame {
 
     private static final String DICTIONARY_PATH = "dictionary.txt";
@@ -28,17 +27,20 @@ public class HangmanGame {
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
                 printGameState(mask, errorChar);
+                printGallows(errorChar);
+
 
                 if (winGame(mask, dict)) {
                     System.out.println("И вы выйграли ААААААААААААААВТОМОБИЛЬ!!!" + dict);
                     break;
                 }
                 if (isLose(errorChar)) {
+                    printGallows(MAX_ERRORS);
                     System.out.println("Иди повышай эрудицию, не угадал ты слово, а было оно: " + dict);
                     break;
                 }
 
-                Character guess = reedGuess(scanner);
+                Character guess = readGuess(scanner);
                 boolean open = applyGuess(dict, mask, guess);
 
                 if (!open) {
@@ -80,9 +82,9 @@ public class HangmanGame {
         return mask;
     }
 
-    private static Character reedGuess(Scanner scanner) {
+    private static Character readGuess(Scanner scanner) {
         System.out.print("Введите букву: ");
-        String input = scanner.next().toLowerCase();
+        String input = scanner.nextLine().toLowerCase();
 
         if (input.isEmpty()) {
             return null;
@@ -92,7 +94,7 @@ public class HangmanGame {
 
         if (!input.matches("[а-я]")) {
             System.out.println("ВНИМАНИЕ! вводите только одну русскую букву!");
-            return reedGuess(scanner);
+            return readGuess(scanner);
         }
         return symbol;
     }
@@ -123,6 +125,33 @@ public class HangmanGame {
 
     private static boolean isLose(int errors) {
         return errors >= MAX_ERRORS;
+    }
+
+    private static void printGallows(int errors) {
+        System.out.println(" +---+");
+        System.out.println(" | |");
+        if (errors >= 1) {
+            System.out.println(" O |");
+        } else {
+            System.out.println(" |");
+        }
+        if (errors >= 3) {
+            System.out.println("/|\\ |");
+        } else if (errors == 2) {
+            System.out.println(" | |");
+        } else {
+            System.out.println(" |");
+        }
+        if (errors >= 5) {
+            System.out.println("/ \\ |");
+        } else if (errors == 4) {
+            System.out.println("/ |");
+        } else {
+            System.out.println(" |");
+        }
+        System.out.println(" |");
+        System.out.println("=========");
+
     }
 }
 
